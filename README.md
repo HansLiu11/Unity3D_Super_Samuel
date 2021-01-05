@@ -1,5 +1,6 @@
-# Super_Samuel
-## Unity 2017.3.1f1
+# Project Name : Super Samuel
+## Unity Version
+> 2017.3.1f1
 ## Use Resourse
 > Free Assets 
 ## Tips：
