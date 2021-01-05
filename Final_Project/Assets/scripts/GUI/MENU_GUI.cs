@@ -4,11 +4,7 @@ using UnityEngine;
 using System.IO;
 
 public class MENU_GUI : MonoBehaviour {
-    public int button_X;
-    public int button_Y;
-    public int button_Heigh;
-    public int button_Wide;
-    private string pname = "Player";
+    private string pname = "Enter Your Name";
     // Use this for initialization
     private void Awake()
     {
@@ -28,9 +24,13 @@ public class MENU_GUI : MonoBehaviour {
         //Enter
         if (Event.current.Equals(Event.KeyboardEvent("return")))
         {
-            GameData.Names = pname;
+            if (pname == "Enter Your Name")
+                GameData.Names = "Player";
+            else
+                GameData.Names = pname;
             Debug.Log(GameData.Names);
         }
-        pname = GUI.TextField(new Rect(25, Screen.height - 40, 100, 30), pname);
+        pname = GUI.TextField(new Rect(0.43f * Screen.width, 0.6f * Screen.height, 0.1f * Screen.width, 0.05f * Screen.height), pname);
+        
     }  
 }

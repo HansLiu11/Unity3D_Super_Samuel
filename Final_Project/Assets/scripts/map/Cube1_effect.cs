@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Cube1_effect : MonoBehaviour {
+    
     // Use this for initialization
     void Start () {
 		
@@ -17,9 +18,10 @@ public class Cube1_effect : MonoBehaviour {
     {
         if (collision.gameObject.tag == "Player")
         {
+            
             GameData.Lifes -= 1;
             Debug.Log(GameData.Lifes);
-            Debug.Log("Here");
+            
         }
     }
 }

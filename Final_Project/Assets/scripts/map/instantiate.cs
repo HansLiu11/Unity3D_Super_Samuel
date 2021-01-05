@@ -7,20 +7,23 @@ public class instantiate : MonoBehaviour {
     public Transform cube1;
     public Transform cube;
     public Transform coin;
-    int x, z,high,coingenerate;
+    public GameObject boat;
+    int x, z,high,coingenerate,fail;
     Vector3 inspos, inspos2;
     map map1=new map();
     // Use this for initialization
     void Start () {
+        boat.SetActive(false);
         map1.buildmap();
         for (int i = 0; i < 900; i++)
         {
             x = i / 30;
             z = i % 30;
-            switch (map1.gamemap[i])
+            switch (GameData.gamemap[i])
             {
                 case 3:
                     Transform b = Instantiate(cube1);
+                    
                     inspos = new Vector3(x * 3.5f, 0, z * 3.5f);
                     b.localPosition = inspos;
                     //Debug.Log("1");
@@ -29,7 +32,8 @@ public class instantiate : MonoBehaviour {
                     Transform a = Instantiate(cube);
                     inspos = new Vector3(x * 3.5f, 0, z * 3.5f);
                     a.localPosition = inspos;
-                    //Debug.Log("2");
+                    a.parent = transform;
+                    Debug.Log("cube");
                     break;
                 case 5:
                     Transform c = Instantiate(cube2);
@@ -49,7 +53,7 @@ public class instantiate : MonoBehaviour {
                 Transform d = Instantiate(coin);
                 inspos = new Vector3(x * 3.5f, 1.5f, z * 3.5f);
                 inspos2 = new Vector3(x * 3.5f, 3.5f, z * 3.5f);
-                if (map1.gamemap[i]==4|| map1.gamemap[i] == 5)
+                if (GameData.gamemap[i]==4|| GameData.gamemap[i] == 5)
                 {
                     d.localPosition = inspos;
                 }
@@ -60,9 +64,19 @@ public class instantiate : MonoBehaviour {
             }
         }
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    // Update is called once per frame
+    void Update () {
+        fail = 0;
+		for(int i=0;i<900;i++)
+        {
+            if (GameData.gamemap[i] == 4) fail++;
+        }
+        if(fail==0)
+        {
+            boat.SetActive(true);
+        }
+        if(Input.GetKeyDown(KeyCode.P))
+            boat.SetActive(true);
+    }
 }

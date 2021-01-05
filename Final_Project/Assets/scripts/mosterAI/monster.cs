@@ -5,9 +5,9 @@ using UnityEngine.AI;
 
 public class monster : MonoBehaviour
 {
-
     Animator ani;//動畫控制組件
     NavMeshAgent NMA;//導航控制組件
+    Vector3 nextpos;
     private GameObject target;//玩家對象
     float distance;//玩家和敵人之間的距離
     int nowstate;//當前敵人所處的狀態
@@ -41,6 +41,7 @@ public class monster : MonoBehaviour
     {
         //玩家和敵人之間的距離，實時更新
         distance = Vector3.Distance(transform.position, target.transform.position);
+
         //調用距離改變函數
         distancechange();
         //調用狀態改變函數
@@ -48,12 +49,12 @@ public class monster : MonoBehaviour
     }
     void distancechange()
     {
-        if (distance <= 10)//如果玩家和敵人之間距離小於10
+        if (distance <= 20)//如果玩家和敵人之間距離小於20
         {
             isChangestate = true;//可以改變狀態
             nowstate = 2;//敵人狀態為追趕、攻擊玩家
         }
-        else  //如果距離大於10
+        else  //如果距離大於20
         {
             if (isChangestate == true)//如果可以改變狀態
             {
@@ -71,7 +72,7 @@ public class monster : MonoBehaviour
     {
         if (nowstate == 0)//如果狀態為0
         {
-            ani.Play("Idle");//播放發呆動畫
+            ani.SetTrigger("Idle");//播放發呆動畫
             NMA.isStopped = true;//導航停止
             stoptime += Time.deltaTime;//停留時間自增
             isRandom = true;//可以隨機數
@@ -88,11 +89,11 @@ public class monster : MonoBehaviour
                 //隨機兩個點（地形范圍內）
                 x = Random.Range(-10, 10);
                 z = Random.Range(-10, 10);
-
+                nextpos = new Vector3(transform.position.x + x, transform.position.y, transform.position.z + z);
                 isRandom = false;//只允許隨機兩個點
             }
             //下一個坐標點為隨機到的點
-            Vector3 nextpos = new Vector3(transform.position.x + x, transform.position.y, transform.position.z + z);
+            
             NMA.destination = nextpos; //導航到下一個點
             ani.SetBool("move", true);//播放走路動畫
             //Debug.DrawLine(transform.position, nextpos, Color.red);//從當前位置到下一個點之間畫一條紅線（紅線在Scene場景中可見）
@@ -105,12 +106,12 @@ public class monster : MonoBehaviour
         else if (nowstate == 2)//如果狀態為2
         {
             NMA.destination = target.transform.position;//導航到玩家位置
-            if (NMA.remainingDistance > 2.5f)//如果和玩家距離大於1
+            if (NMA.remainingDistance > 2.5f)//如果和玩家距離大於2.5
             {
                 NMA.isStopped = false;
                 ani.SetBool("move", true);//播放跑動畫
             }
-            else if (NMA.remainingDistance <= 2.5f)//如果和玩家之間距離小於1
+            else if (NMA.remainingDistance <= 2.5f)//如果和玩家之間距離小於2.5
             {
                 NMA.isStopped = true;//導航停止
                 Vector3 targetPos = target.transform.position;
@@ -132,7 +133,11 @@ public class monster : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        GameData.Lifes -= 1;
-        Debug.Log(GameData.Lifes);
+        if (collision.gameObject.tag == "Player")
+        {
+            GameData.Lifes -= 1;
+            Debug.Log("collide");
+            //Debug.Log(GameData.Lifes);
+        }
     }
 }

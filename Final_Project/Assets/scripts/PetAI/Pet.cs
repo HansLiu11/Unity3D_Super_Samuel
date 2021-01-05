@@ -28,7 +28,7 @@ public class Pet : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         tarstate = target.GetComponent<Animator>().GetInteger("AnimationPar");//player狀態
-        Debug.Log(tarstate);
+        distance = Vector3.Distance(transform.position, target.transform.position);
         transform.rotation = target.transform.rotation;
         //距離改變函數
         distancechange();
@@ -43,7 +43,7 @@ public class Pet : MonoBehaviour {
             ani.SetBool("stand", true);
             nowstate = 2;
         }
-        else               //停止狀態
+        else if(distance < 3)
         {
             ani.SetBool("stand", false);
             nowstate = 0;
@@ -56,7 +56,7 @@ public class Pet : MonoBehaviour {
             ani.SetFloat("anitime", anitime);
             NMA.isStopped = true;     //導航停止
             anitime += Time.deltaTime;//停留時間自增
-                
+            Debug.Log("state 0");
         }
         else if(nowstate == 1)
         {
@@ -64,9 +64,13 @@ public class Pet : MonoBehaviour {
         }
         else if (nowstate == 2)
         {
+            Debug.Log("state 2");
             NMA.isStopped = false;//導航恢復
-            NMA.destination = target.transform.position;//導航到玩家位置
-            if (NMA.remainingDistance > 8)
+            NMA.destination = target.transform.position + new Vector3(-1, 0, 1);//導航到玩家位置附近
+            Debug.DrawLine(transform.position, NMA.destination, Color.red);//寵物和玩家之間畫一條紅線
+            Vector3 newpos = target.transform.position + new Vector3(-1, 0, 1);
+            transform.position = Vector3.Lerp(transform.position, newpos, Time.deltaTime);
+            if (Input.GetKey(KeyCode.LeftShift))
             {
                 NMA.acceleration = 12;
                 ani.SetFloat("speed", 5);
@@ -74,9 +78,10 @@ public class Pet : MonoBehaviour {
             else if (NMA.remainingDistance < 3)
             {
                 NMA.isStopped = true;
+                ani.SetFloat("speed", 0);
                 ani.SetTrigger("stop");
             }
-            else
+            else if(NMA.remainingDistance > 3 && NMA.remainingDistance > 5)
             {
                 ani.SetFloat("speed", 3);
                 NMA.acceleration = 8;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class player_move_jump : MonoBehaviour {
     private float speed;
     private Vector3 moveDirection = Vector3.zero;
@@ -10,13 +11,20 @@ public class player_move_jump : MonoBehaviour {
     [SerializeField] float jumpforce;
     Rigidbody rb;
     Animator animator;
-    private int a = 0,dead=0;
+    private int a = 0;
     private Vector3 maindirection;
-
+    public GameObject monstor2;
+    public GameObject monstor3;
+    public GameObject monstor41;
+    public GameObject monstor42;
+    public GameObject monstor43;
+    public GameObject monstor44;
+    public GameObject Bees;
     public int button_X;
     public int button_Y;
     public int button_Heigh;
     public int button_Wide;
+    int one = 0;
     // Use this for initialization
     private void Awake()
     {
@@ -66,47 +74,55 @@ public class player_move_jump : MonoBehaviour {
             animator.SetInteger("AnimationPar", 1);
         else
             animator.SetInteger("AnimationPar", 0);
+
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            GameData.Setfloor += 1;
+        }
+        if(GameData.dienum==4)
+        {
+            GameData.Setfloor = 4;
+        }
     }
-    private void OnCollisionStay(Collision collision)
+    private void OnCollisionEnter(Collision col)
     {
-        if (collision.gameObject.tag == "ground")
+        if (col.gameObject.tag == "ground")
+        {
             a = 0;
-        if (collision.gameObject.tag == "monster")
-        {
-            rb.AddForce(transform.forward * -40);
-            Debug.Log("monster");
-        }
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Dead")
-        {
-            /*rb.constraints &= ~RigidbodyConstraints.FreezeRotationX;
-            rb.constraints &= ~RigidbodyConstraints.FreezeRotationY;
-            rb.constraints &= ~RigidbodyConstraints.FreezeRotationZ;*/
-            rb.constraints = RigidbodyConstraints.None;
-            rb.AddTorque(new Vector3(1, 1, 1) * 5);
-            dead = 1;
-        }
-
-    }
-    private void OnGUI()
-    {
-        if (dead == 1)
-        {
-            Debug.Log("dead");
-
-            if (GUI.Button(new Rect(400, 200, 100, 50), "Retry"))
+            if(col.gameObject.name== "big_module_01_02_floorb")
             {
-                Debug.Log("retry");
-                //rb.constraints = RigidbodyConstraints.FreezeRotationX;
-                //rb.constraints = RigidbodyConstraints.FreezeRotationY;
-                transform.localRotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
-                rb.constraints = RigidbodyConstraints.FreezeRotation;
-                transform.localPosition = new Vector3(0, 10, 0);
+                monstor2.SetActive(true);
             }
-
+            if (col.gameObject.name == "big_module_01_02_floorc")
+            {
+                monstor3.SetActive(true);
+            }
+            if (col.gameObject.name == "big_module_01_02_floord"&&one<1)
+            {
+                monstor41.SetActive(true);
+                monstor42.SetActive(true);
+                monstor43.SetActive(true);
+                monstor44.SetActive(true);
+                one++;
+            }
+            if (col.gameObject.name == "terrain_standard (3)")
+            {
+                Bees.SetActive(true);
+            }
+        }
+        if (col.gameObject.tag == "monster")
+        {
         }
     }
+    private void OnCollisionStay(Collision col)
+    {
+        if (col.gameObject.tag == "Rabbit")
+        {
+            rb.AddForce(transform.forward * -3);
+        }
+    }
+
+
 
 }

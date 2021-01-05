@@ -2,21 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-public class Level_Status : MonoBehaviour {
+public class Level_Status : MonoBehaviour
+{
     public Texture img1;
     public Texture img2;
     public Texture img3;
+    public Texture KEY;
     //public Player_Mode player;
-    public int life_X;
-    public int life_Y;
-    public int life_Wide = 50;
-    public int coin_X = 650;
-    public int coin_Y = 0;
-    public int coin_Wide = 50;
-    public int button_X;
-    public int button_Y;
-    public int button_Heigh;
-    public int button_Wide;
+
     // Use this for initialization
     private void Awake()
     {
@@ -35,37 +28,32 @@ public class Level_Status : MonoBehaviour {
     private void OnGUI()
     {
         GUIStyle coinstyle = new GUIStyle();
-        coinstyle.normal.textColor = new Color(255,215,0);
-        coinstyle.fontSize = 45;
-        GUI.Label(new Rect(coin_X + 70, coin_Y, 200, 50), GameData.Coins.ToString(),coinstyle);
-
+        coinstyle.normal.textColor = new Color(255, 215, 0);
+        coinstyle.fontSize = (int)(0.04f*Screen.width);
+        GUI.Label(new Rect(0.95f * Screen.width, 0.005f * Screen.height, 200, 50), GameData.Coins.ToString(), coinstyle);
+        GUI.Label(new Rect(0.45f * Screen.width, 0.005f * Screen.height, 200, 50), ((GameData.Score) / 3600).ToString() + "：" + (((GameData.Score) / 60) % 60).ToString(), coinstyle);
         for (int i = 0; i <= 9; ++i)
         {
+            if (GameData.Lifes > 10)
+                GameData.Lifes = 10;
             if (i < GameData.Lifes)
-                GUI.Label(new Rect(life_X + (life_Wide * i), life_Y, life_Wide, life_Wide), img1);
+                GUI.Label(new Rect(0.005f * Screen.width + (0.03f * Screen.width * i), 0.005f * Screen.height, 0.03f * Screen.width, 0.03f * Screen.width), img1);
             else
-                GUI.Label(new Rect(life_X + (life_Wide * i), life_Y, life_Wide, life_Wide), img2);
+                GUI.Label(new Rect(0.005f * Screen.width + (0.03f * Screen.width * i), 0.005f * Screen.height, 0.03f * Screen.width, 0.03f * Screen.width), img2);
             //Debug.Log("OnGUI" + GameData.Lifes);
         }
-        GUI.Label(new Rect(coin_X , coin_Y, coin_Wide, coin_Wide), img3);
-        GUI.Label(new Rect(),"Score : "+ GameData.Score);
-        if (GUI.Button(new Rect(button_X, button_Y, button_Wide, button_Heigh), "Save"))
+        GUI.Label(new Rect(0.90f*Screen.width, 0.005f * Screen.height, 0.04f * Screen.width, 0.04f * Screen.width), img3);
+
+        if (GameData.Church_1 == 96)
         {
-            {
-                player p = new player();
-                p.player_name = "陳彥博";
-                p.coin = GameData.Coins;
-                p.score = GameData.Score;
-                p.life = GameData.Lifes;
-                string a = JsonUtility.ToJson(p);
-                StreamWriter file = new StreamWriter(System.IO.Path.Combine("Assets/GameJSONData", "Player.json"));
-                //StreamWriter file = new StreamWriter(System.IO.Path.Combine(Application.streamingAssetsPath, "Player.json"));
-                file.Write(a);
-                file.Close();
-            }
-            //Debug.Log(play.score);
-            Debug.Log("Clicked the button with an image");
+            GameData.key_1 = true;
         }
+        if (GameData.key_1)
+            GUI.Label(new Rect(0.01f * Screen.width, 0.9f * Screen.height, 0.04f * Screen.width, 0.04f * Screen.width), KEY);
+        if (GameData.key_2)
+            GUI.Label(new Rect(0.06f * Screen.width, 0.9f * Screen.height, 0.04f * Screen.width, 0.04f * Screen.width), KEY);
+        if (GameData.key_3)
+            GUI.Label(new Rect(0.11f * Screen.width, 0.9f * Screen.height, 0.04f * Screen.width, 0.04f * Screen.width), KEY);
     }
 }
 [System.Serializable]

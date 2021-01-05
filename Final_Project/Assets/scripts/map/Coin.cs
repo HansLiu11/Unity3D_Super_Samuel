@@ -25,6 +25,21 @@ public class Coin : MonoBehaviour {
             GameData.Coins += 1;
             Debug.Log(GameData.Coins);
             Debug.Log("Here");
+            if (GameData.Church_1_in)
+                GameData.Church_1++;
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            Destroy(this.gameObject);
+            Debug.Log("fvbdfb");
+            GameData.Coins += 1;
+            Debug.Log(GameData.Coins);
+            Debug.Log("Here");
+            if (GameData.Church_1_in)
+                GameData.Church_1++;
         }
     }
 }

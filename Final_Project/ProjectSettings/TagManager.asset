@@ -10,6 +10,13 @@ TagManager:
   - pet
   - ladder
   - Airdoor
+  - Entrance
+  - Boat_Control
+  - Bullet
+  - Rabbit
+  - FLY
+  - impact
+  - FLYY
   layers:
   - Default
   - TransparentFX
