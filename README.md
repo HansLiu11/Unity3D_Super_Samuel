@@ -1,7 +1,7 @@
 # Project Name : Super Samuel
 ## Unity Version
-> 2017.3.1f1
+* 2017.3.1f1
 ## Use Resourse
-> Free Assets 
+* Free Assets 
 ## Tips：
 **建立時需要將Assets\GameJSONData\Top3.json檔案加入Data資料夾中**
