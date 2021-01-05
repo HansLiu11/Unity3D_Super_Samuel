@@ -1,1 +1,6 @@
 # Super_Samuel
+## Unity 2017.3.1f1
+## Use Resourse
+> Free Assets 
+## Tips：
+**建立時需要將Assets\GameJSONData\Top3.json檔案加入Data資料夾中**
